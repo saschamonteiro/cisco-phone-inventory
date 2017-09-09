@@ -3,14 +3,14 @@
 Utility to extract Cisco IPPhones with registration status and optional serial-number (if webservice on the phone is enabled and reachable!) from Cisco UCM.
 
 ## Requires
-Node.JS 8.4.0 or higher  
-UCM Services enabled on node1 (pub)
-- Cisco AXL Web Service
-- SOAP - Real-Time Service APIs
-UCM Application user with roles:
-- Standard AXL API access
-- Standard CCM Admin Users
-- Standard SERVICEABILITY
+- Node.JS 8.4.0 or higher  
+- UCM Services enabled on node1 (pub)
+  - Cisco AXL Web Service
+  - SOAP - Real-Time Service APIs
+- UCM Application user with roles:
+  - Standard AXL API access
+  - Standard CCM Admin Users
+  - Standard SERVICEABILITY
 
 ## Install
 Clone/download this repo  
@@ -28,3 +28,6 @@ UCM_HOST=x.x.x.x UCM_USER=administrator UCM_PASS=password UCM_VERSION=11.5 node 
 
 this generates phones.csv  
 name,description,loginuser,dirNumber,status,ipaddress
+
+## Note
+UCM_VERSION will need to represent a valid AXL Schema version (e.g. 10.0, 10.5, 11.0, 11.5)
