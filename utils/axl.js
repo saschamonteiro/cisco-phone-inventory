@@ -15,7 +15,7 @@ class AXL {
       'Content-Type': 'text/xml; charset=utf-8'
     }
     this.offSet = 0;
-    this.stepSize = 3;
+    this.stepSize = 5000;
     this.options = {
       host: ucmHost,        // The IP Address of the Communications Manager Server
       port: 443,                  // Clearly port 443 for SSL -- I think it's the default so could be removed

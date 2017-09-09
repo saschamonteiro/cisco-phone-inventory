@@ -1,9 +1,13 @@
 # cisco-phone-inventory
 
-Utility to extract Cisco IPPhones with registration status and optional serial-number (if webservice on the phone is enabled and reachable!)
+Utility to extract Cisco IPPhones with registration status and optional serial-number (if webservice on the phone is enabled and reachable!) from Cisco UCM.
 
 ## Requires
-Node.JS 8.4.0 or higher
+Node.JS 8.4.0 or higher  
+UCM Application user with roles:
+- Standard AXL API access
+- Standard CCM Admin Users
+- Standard SERVICEABILITY
 
 ## Install
 Clone/download this repo  
