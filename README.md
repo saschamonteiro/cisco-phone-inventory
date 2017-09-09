@@ -7,7 +7,17 @@ Node.JS 8.4.0 or higher
 
 ## Install
 Clone/download this repo  
+run this command in the root directory (where package.json is) to install dependancies
 npm install
 
-## Run
-UCM_HOST=x.x.x.x UCM_USER=administrator UCM_PASS=password UCM_VERSION=11.5 GET_SERIALS=true node index.js 
+## Run with serial-number extraction
+UCM_HOST=x.x.x.x UCM_USER=administrator UCM_PASS=password UCM_VERSION=11.5 GET_SERIALS=true node index.js  
+
+this generates phones.csv
+name,description,loginuser,dirNumber,status,ipaddress,serial,model
+
+## Run without serial-number extraction
+UCM_HOST=x.x.x.x UCM_USER=administrator UCM_PASS=password UCM_VERSION=11.5 node index.js  
+
+this generates phones.csv
+name,description,loginuser,dirNumber,status,ipaddress
