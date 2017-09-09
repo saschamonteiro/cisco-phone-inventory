@@ -14,7 +14,7 @@ Utility to extract Cisco IPPhones with registration status and optional serial-n
 
 ## Install
 Clone/download this repo  
-run this command in the root directory (where package.json is) to install dependancies  
+run this command in the root directory (where package.json is) to install dependencies  
 `npm install`
 
 ## Run with serial-number extraction
