@@ -4,6 +4,9 @@ Utility to extract Cisco IPPhones with registration status and optional serial-n
 
 ## Requires
 Node.JS 8.4.0 or higher  
+UCM Services enabled on node1 (pub)
+- Cisco AXL Web Service
+- SOAP - Real-Time Service APIs
 UCM Application user with roles:
 - Standard AXL API access
 - Standard CCM Admin Users
