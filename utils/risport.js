@@ -27,7 +27,7 @@ class RisPort {
     this.options.agent = new https.Agent(this.options);
   }
 
-  getRisPortStatus(phonesList, options){
+  getRisPortStatus(phonesList, options, stepSize){
     return new Promise((resolve, reject) => {
       var sAXLRequest = "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
     sAXLRequest += "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:soap=\"http://schemas.cisco.com/ast/soap\">";
@@ -36,7 +36,7 @@ class RisPort {
     sAXLRequest += "<soap:selectCmDevice>";
 		sAXLRequest += "<soap:StateInfo></soap:StateInfo>";
 		sAXLRequest += "<soap:CmSelectionCriteria>";
-		sAXLRequest += "<soap:MaxReturnedDevices>1000</soap:MaxReturnedDevices>";
+		sAXLRequest += "<soap:MaxReturnedDevices>"+ stepSize +"</soap:MaxReturnedDevices>";
     sAXLRequest += "<soap:DeviceClass>Any</soap:DeviceClass>";
     sAXLRequest += "<soap:Model>255</soap:Model>";
     sAXLRequest += "<soap:Status>Any</soap:Status>";
@@ -124,14 +124,14 @@ class RisPort {
   async getAllDevices(devices){
     let options = this.options;
       let getRisPortStatus= this.getRisPortStatus;
-      var arrays = [], size = 3;
+      var arrays = [], size = this.stepSize;
 
       while (devices.length > 0)
           arrays.push(devices.splice(0, size));
 
       // console.log(arrays);
       for(let count2 = 0; count2 < arrays.length; count2++){
-        let d = await getRisPortStatus(arrays[count2], options);
+        let d = await getRisPortStatus(arrays[count2], options, this.stepSize);
         if(d !== undefined){
           this.devices = this.devices.concat(d);
         }
