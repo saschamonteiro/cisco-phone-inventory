@@ -122,20 +122,17 @@ class RisPort {
 
 
   async getAllDevices(devices){
-    let options = this.options;
-      let getRisPortStatus= this.getRisPortStatus;
       var arrays = [], size = this.stepSize;
 
-      while (devices.length > 0)
-          arrays.push(devices.splice(0, size));
-
-      // console.log(arrays);
-      for(let count2 = 0; count2 < arrays.length; count2++){
-        let d = await getRisPortStatus(arrays[count2], options, this.stepSize);
+      while (devices.length > 0){
+        arrays.push(devices.splice(0, size));
+      }
+      for(let v of arrays) {
+        let d = await this.getRisPortStatus(v, this.options, this.stepSize);
         if(d !== undefined){
           this.devices = this.devices.concat(d);
         }
-      }
+      };
 
       return this.devices;
 

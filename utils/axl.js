@@ -92,11 +92,8 @@ class AXL {
     }
 
     async getAllDevices(){
-      let getDevices = this.getDevices;
-      for(let count = 0; count < 10; count++){
-        let d = await getDevices(count * this.stepSize, this.stepSize, this.ucmVersion, this.options);
-        // console.log('--d--', d);
-
+      for(let count of Array(10).keys()){
+        let d = await this.getDevices(count * this.stepSize, this.stepSize, this.ucmVersion, this.options);
         if(d !== undefined){
           this.devices = this.devices.concat(d);
         }
