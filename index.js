@@ -34,7 +34,7 @@ async function getDeviceAndIp() {
       fs.appendFile('phones.csv', p.name+','+p.description+','+p.loginUser+','+p.dirNumber+','+p.status+','+p.ipAddress+'\r\n', function(err){});
     });
   }
-  console.log(new Date()+' Finished wrintg csv for '+phonesWithSerial.length+' phones');
+  console.log(new Date()+' Finished writing csv for '+phonesWithSerial.length+' phones');
 }
 
 async function getAllPhonesSerial(phones){
