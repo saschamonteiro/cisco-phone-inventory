@@ -28,10 +28,10 @@ function getPhoneSerial(phone) {
 
       });
       res.on('error', function(err){
-        reject(err);
+        resolve(phone);
       });
     }).on('error', function(err){
-      // console.log(err);
+      // console.error(err);
       resolve(phone);
     });
 

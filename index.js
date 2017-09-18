@@ -5,6 +5,7 @@ var fs = require('fs');
 var AXL = require('./utils/axl');
 var RisPort = require('./utils/risport');
 var getPhoneSerial = require('./utils/phone');
+var ProgressBar = require('progress');
 
 var authentication = process.env.UCM_USER+':'+process.env.UCM_PASS;
 var ucmVersion = process.env.UCM_VERSION;
@@ -38,6 +39,7 @@ async function getDeviceAndIp() {
 }
 
 async function getAllPhonesSerial(phones){
+  var bar = new ProgressBar(':bar', { total: phones.length });
   let reqs = phones.map(async function(r) {
     if(r.http === 'Yes'){
       let phone = await getPhoneSerial(r);
@@ -45,6 +47,7 @@ async function getAllPhonesSerial(phones){
     } else {
       phonesWithSerial.push(r);
     }
+    bar.tick();
   });
   await Promise.all(reqs);
 }
