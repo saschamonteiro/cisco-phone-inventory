@@ -1,0 +1,14 @@
+
+{
+  root: true,
+  parser: 'babel-eslint',
+  parserOptions: {
+    sourceType: 'module'
+  },
+  extends: [],
+  rules: {
+    // override if necessary
+  },
+  plugins: [
+    ]
+}

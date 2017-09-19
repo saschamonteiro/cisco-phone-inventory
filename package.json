@@ -2,12 +2,35 @@
   "name": "ucm-inventory",
   "version": "1.0.0",
   "description": "Cisco IPPhone inventory",
+  "keywords": [
+    "Cisco",
+    "AXL",
+    "RISPORT",
+    "IPPhone",
+    "inventory"
+  ],
+  "homepage": "https://github.com/saschamonteiro/cisco-phone-inventory",
+  "bugs": {
+    "url": "https://github.com/saschamonteiro/cisco-phone-inventory/issues"
+  },
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint index.js utils"
+  },
+  "engines": {
+    "node": ">=8.4.0"
   },
   "author": "Sascha Monteiro",
-  "license": "GNU",
+  "contributors": [{
+      "name": "Sascha Monteiro"
+    }],
+  "license": "GPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/saschamonteiro/cisco-phone-inventory"
+  },
   "dependencies": {
     "progress": "^2.0.0",
     "xml2js": "^0.4.19"
