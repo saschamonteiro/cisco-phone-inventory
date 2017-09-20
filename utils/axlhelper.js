@@ -17,7 +17,7 @@ module.exports = {
     let devices = [];
     var r = response["soapenv:Envelope"]["soapenv:Body"][0]["ns:executeSQLQueryResponse"][0]["return"][0]["row"];
     if(r !== undefined){
-      r.forEach(function(val){
+      r.forEach(val => {
         devices.push(val["name"][0]);
       });
     }
