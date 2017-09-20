@@ -49,8 +49,16 @@ class RisPort {
       });
       req.write(sAXLRequest);
       req.end();
+      req.on('socket', function (socket) {
+        socket.setTimeout(5000);
+        socket.on('timeout', function() {
+          reject('timeout connecting to ucm risport')
+        });
+      });
+
       req.on('error', function(e) {
         console.error(e);
+        reject(e);
       });
    });
   }
@@ -75,6 +83,9 @@ class RisPort {
       const d = this.getAllDevices(devices);
       d.then(function(data){
         resolve(data);
+      });
+      d.catch(function(err){
+        reject(err);
       });
     })
  }

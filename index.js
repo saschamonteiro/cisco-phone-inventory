@@ -14,28 +14,34 @@ var getPhoneSerials = process.env.GET_SERIALS || 'false';
 var phonesWithSerial = [];
 
 async function getDeviceAndIp() {
-  const axl = new AXL(ucmVersion, ucmHost, authentication);
-  console.log(new Date()+' Getting Phones from AXL');
-  const devices = await axl.getPhones();
-  const risPort = new RisPort(ucmVersion, ucmHost, authentication);
-  console.log(new Date()+' Getting ip/registration from RisPort');
-  const devicesWithStatus = await risPort.getPhones(devices);
-  if(getPhoneSerials === 'true'){
-    console.log(new Date()+' Getting phone serial numbers');
-    await getAllPhonesSerial(devicesWithStatus);
-    fs.unlink('phones.csv', function(e){});
-    fs.appendFileSync('phones.csv', 'name,description,loginuser,dirNumber,status,ipaddress,serial,model\r\n');
-    phonesWithSerial.forEach(p => {
-      fs.appendFile('phones.csv', p.name+','+p.description+','+p.loginUser+','+p.dirNumber+','+p.status+','+p.ipAddress+','+p.serial+','+p.model+'\r\n', function(err){});
-    });
-  }else{
-    fs.unlink('phones.csv', function(e){});
-    fs.appendFileSync('phones.csv', 'name,description,loginuser,dirNumber,status,ipaddress\r\n');
-    devicesWithStatus.forEach(p => {
-      fs.appendFile('phones.csv', p.name+','+p.description+','+p.loginUser+','+p.dirNumber+','+p.status+','+p.ipAddress+'\r\n', function(err){});
-    });
+  try{
+    const axl = new AXL(ucmVersion, ucmHost, authentication);
+    console.log(new Date()+' Getting Phones from AXL');
+    const devices = await axl.getPhones();
+    const risPort = new RisPort(ucmVersion, ucmHost, authentication);
+    console.log(new Date()+' Getting ip/registration from RisPort');
+    const devicesWithStatus = await risPort.getPhones(devices);
+    if(getPhoneSerials === 'true'){
+      console.log(new Date()+' Getting phone serial numbers');
+      await getAllPhonesSerial(devicesWithStatus);
+      fs.unlink('phones.csv', function(e){});
+      fs.appendFileSync('phones.csv', 'name,description,loginuser,dirNumber,status,ipaddress,serial,model\r\n');
+      phonesWithSerial.forEach(p => {
+        fs.appendFile('phones.csv', p.name+','+p.description+','+p.loginUser+','+p.dirNumber+','+p.status+','+p.ipAddress+','+p.serial+','+p.model+'\r\n', function(err){});
+      });
+    }else{
+      fs.unlink('phones.csv', function(e){});
+      fs.appendFileSync('phones.csv', 'name,description,loginuser,dirNumber,status,ipaddress\r\n');
+      devicesWithStatus.forEach(p => {
+        fs.appendFile('phones.csv', p.name+','+p.description+','+p.loginUser+','+p.dirNumber+','+p.status+','+p.ipAddress+'\r\n', function(err){});
+      });
+    }
+    console.log(new Date()+' Finished writing csv for '+phonesWithSerial.length+' phones');
+  }catch(err){
+    console.error('__Error__: '+err);
+    process.exit(1);
   }
-  console.log(new Date()+' Finished writing csv for '+phonesWithSerial.length+' phones');
+
 }
 
 async function getAllPhonesSerial(phones){

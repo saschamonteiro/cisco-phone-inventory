@@ -1,6 +1,7 @@
 'use strict'
 
 var http = require("http");
+http.globalAgent.maxSockets = 128;
 var parseString = require('xml2js').parseString;
 
 function getPhoneSerial(phone) {
@@ -33,6 +34,8 @@ function getPhoneSerial(phone) {
     }).on('error', function(err){
       // console.error(err);
       resolve(phone);
+    }).on('socket', function(socket){
+      socket.setTimeout(5000);
     });
 
   });

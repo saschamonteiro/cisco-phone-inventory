@@ -52,8 +52,16 @@ class AXL {
       });
       req.write(soapBody);
       req.end();
+      req.on('socket', function (socket) {
+        socket.setTimeout(5000);
+        socket.on('timeout', function() {
+          reject('timeout connecting to ucm axl');
+        });
+      });
+
       req.on('error', function (e) {
-        console.error(e);
+        console.error('axlerror', e);
+        reject(e);
       });
     });
 
@@ -78,6 +86,9 @@ class AXL {
       const d = this.getAllDevices();
       d.then(function (data) {
         resolve(data);
+      });
+      d.catch(function(err){
+        reject(err);
       });
     })
   }
