@@ -3,25 +3,31 @@
 var https = require("https");
 var parseString = require('xml2js').parseString;
 var RisPortHelper = require('./risporthelper');
-var RisPort = {
+var ucm = {};
+ucm.inventory = {};
+ucm.inventory.cisco = {};
+ucm.inventory.cisco.ucm = {};
+ucm.inventory.cisco.ucm.RisPort = {
+  devices: [],
+  settings: {
+    stepSize: 1000,
+    options: {
+      host: '',
+      port: 443,
+      path: '/realtimeservice2/services/RISService70',
+      method: 'POST',
+      rejectUnauthorized: false
+    }
+  },
   init (ucmVersion, ucmHost, authentication){
     this.ucmVersion = ucmVersion;
-    this.devices = [];
-    this.headers = {
+    this.settings.options.host = ucmHost;
+    this.settings.options.headers = {
       'SoapAction':'http://schemas.cisco.com/ast/soap/action/#RisPort70#SelectCmDevice',
       'Authorization': 'Basic ' + new Buffer(authentication).toString('base64'),
       'Content-Type': 'text/xml; charset=utf-8'
     }
-    this.stepSize = 1000; //for ucm prior to 9.0 the stepSize is 200
-    this.options = {
-      host: ucmHost,        // The IP Address of the Communications Manager Server
-      port: 443,                  // Clearly port 443 for SSL -- I think it's the default so could be removed
-      path: '/realtimeservice2/services/RISService70',              // This is the URL for accessing RisPort on the server
-      method: 'POST',             // AXL Requires POST messages
-      headers: this.headers,           // using the headers we specified earlier
-      rejectUnauthorized: false   // required to accept self-signed certificate
-    };
-    this.options.agent = new https.Agent(this.options);
+    this.settings.options.agent = new https.Agent(this.settings.options);
   },
 
   getRisPortStatus(phonesList, options){
@@ -62,12 +68,12 @@ var RisPort = {
 
 
   async getAllDevices(devices){
-      var arrays = [], size = this.stepSize;
+      var arrays = [], size = this.settings.stepSize;
       while (devices.length > 0){
         arrays.push(devices.splice(0, size));
       }
       for(let v of arrays) {
-        let d = await this.getRisPortStatus(v, this.options);
+        let d = await this.getRisPortStatus(v, this.settings.options);
         if(d !== undefined){
           this.devices = this.devices.concat(d);
         }
@@ -89,4 +95,4 @@ var RisPort = {
 
 }
 
-module.exports = RisPort;
+module.exports = ucm.inventory.cisco.ucm.RisPort;

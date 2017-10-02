@@ -3,26 +3,32 @@
 var https = require("https");
 var parseString = require('xml2js').parseString;
 var AxlHelper = require('./axlhelper');
-
-var AXL = {
+var ucm = {};
+ucm.inventory = {};
+ucm.inventory.cisco = {};
+ucm.inventory.cisco.ucm = {};
+ucm.inventory.cisco.ucm.AXL = {
+  devices: [],
+  settings: {
+    ucmVersion: '',
+    stepSize: 5000,
+    options: {
+      host: '',
+      port: 443,
+      path: '/axl/',
+      method: 'POST',
+      rejectUnauthorized: false
+    }
+  },
   init(ucmVersion, ucmHost, authentication) {
-    this.ucmVersion = ucmVersion;
-    this.devices = [];
-    this.headers = {
+    this.settings.ucmVersion = ucmVersion;
+    this.settings.options.host = ucmHost;
+    this.settings.options.headers = {
       'SoapAction': 'CUCM:DB ver=' + ucmVersion,
       'Authorization': 'Basic ' + new Buffer(authentication).toString('base64'),
       'Content-Type': 'text/xml; charset=utf-8'
-    }
-    this.stepSize = 5000;
-    this.options = {
-      host: ucmHost,        // The IP Address of the Communications Manager Server
-      port: 443,                  // Clearly port 443 for SSL -- I think it's the default so could be removed
-      path: '/axl/',              // This is the URL for accessing axl on the server
-      method: 'POST',             // AXL Requires POST messages
-      headers: this.headers,           // using the headers we specified earlier
-      rejectUnauthorized: false   // required to accept self-signed certificate
     };
-    this.options.agent = new https.Agent(this.options);
+    this.settings.options.agent = new https.Agent(this.settings.options);
   },
 
 
@@ -41,6 +47,7 @@ var AXL = {
               console.log('Error', err);
               reject(err);
             } else {
+              // console.log(JSON.stringify(result));
               let devices = AxlHelper.getPhonesFromResponse(result);
               resolve(devices);
             }
@@ -66,12 +73,14 @@ var AXL = {
   },
 
   async getAllDevices() {
+    // console.log('ucmVersion', this.settings.ucmVersion);
+    // console.log('ucmVersion', JSON.stringify(this.settings.options));
     for (let count of Array(10).keys()) {
-      let d = await this.getDevices(count * this.stepSize, this.stepSize, this.ucmVersion, this.options);
+      let d = await this.getDevices(count * this.settings.stepSize, this.settings.stepSize, this.settings.ucmVersion, this.settings.options);
       if (d !== undefined) {
         this.devices = this.devices.concat(d);
       }
-      if (d.length < this.stepSize) {
+      if (d.length < this.settings.stepSize) {
         break;
       }
     }
@@ -93,4 +102,4 @@ var AXL = {
 
 }
 
-module.exports = AXL;
+module.exports = ucm.inventory.cisco.ucm.AXL;

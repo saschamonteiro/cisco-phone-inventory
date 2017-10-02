@@ -2,7 +2,7 @@
 
 var fs = require('fs');
 
-var AXL = require('./utils/axl');
+var CiscoAXL = require('./utils/axl');
 var RisPort = require('./utils/risport');
 var getPhoneSerial = require('./utils/phone');
 var ProgressBar = require('progress');
@@ -15,7 +15,7 @@ var phonesWithSerial = [];
 
 async function getDeviceAndIp() {
   try{
-    const axl = AXL;
+    const axl = CiscoAXL;
     axl.init(ucmVersion, ucmHost, authentication);
     console.log(new Date()+' Getting Phones from AXL');
     const devices = await axl.getPhones();
