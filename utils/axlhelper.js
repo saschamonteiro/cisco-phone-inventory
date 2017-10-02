@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports = {
-  getAxlSoapContent: function(skip, first, ucmVersion) {
+  getAxlSoapContent(skip, first, ucmVersion) {
     return `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:axl="http://www.cisco.com/AXL/API/${ucmVersion}">
       <soapenv:Header/>
       <soapenv:Body>
@@ -13,7 +13,7 @@ module.exports = {
       </soapenv:Body>
       </soapenv:Envelope>`;
   },
-  getPhonesFromResponse: function(response) {
+  getPhonesFromResponse(response) {
     let devices = [];
     var r = response["soapenv:Envelope"]["soapenv:Body"][0]["ns:executeSQLQueryResponse"][0]["return"][0]["row"];
     if(r !== undefined){

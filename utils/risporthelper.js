@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports = {
-  getRisSoapContent: function(phonesList) {
+  getRisSoapContent(phonesList) {
     var risRequest = `<?xml version=\"1.0\" encoding=\"utf-8\"?>
       <soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:soap=\"http://schemas.cisco.com/ast/soap\">
         <soapenv:Header/>
@@ -28,7 +28,7 @@ module.exports = {
       </soapenv:Envelope>`;
     return risRequest;
   },
-  getPhonesFromResponse: function(response, phonesList) {
+  getPhonesFromResponse(response, phonesList) {
     let devices = [];
     let a = response["soapenv:Envelope"]["soapenv:Body"][0];
     let b = a["ns1:selectCmDeviceResponse"][0];

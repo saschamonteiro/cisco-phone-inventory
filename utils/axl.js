@@ -4,18 +4,15 @@ var https = require("https");
 var parseString = require('xml2js').parseString;
 var AxlHelper = require('./axlhelper');
 
-class AXL {
-  constructor(ucmVersion, ucmHost, authentication) {
+var cucm.AXL = {
+  init(ucmVersion, ucmHost, authentication) {
     this.ucmVersion = ucmVersion;
-    this.ucmHost = ucmHost;
-    this.authentication = authentication;
     this.devices = [];
     this.headers = {
       'SoapAction': 'CUCM:DB ver=' + ucmVersion,
       'Authorization': 'Basic ' + new Buffer(authentication).toString('base64'),
       'Content-Type': 'text/xml; charset=utf-8'
     }
-    this.offSet = 0;
     this.stepSize = 5000;
     this.options = {
       host: ucmHost,        // The IP Address of the Communications Manager Server
@@ -26,7 +23,7 @@ class AXL {
       rejectUnauthorized: false   // required to accept self-signed certificate
     };
     this.options.agent = new https.Agent(this.options);
-  }
+  },
 
 
   getDevices(s, f, ucmVersion, options) {
@@ -66,7 +63,7 @@ class AXL {
     });
 
 
-  }
+  },
 
   async getAllDevices() {
     for (let count of Array(10).keys()) {
@@ -79,7 +76,7 @@ class AXL {
       }
     }
     return this.devices;
-  }
+  },
 
   getPhones() {
     return new Promise((resolve, reject) => {

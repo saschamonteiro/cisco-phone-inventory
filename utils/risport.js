@@ -3,18 +3,15 @@
 var https = require("https");
 var parseString = require('xml2js').parseString;
 var RisPortHelper = require('./risporthelper');
-class RisPort {
-  constructor (ucmVersion, ucmHost, authentication){
+var RisPort = {
+  init (ucmVersion, ucmHost, authentication){
     this.ucmVersion = ucmVersion;
-    this.ucmHost = ucmHost;
-    this.authentication = authentication;
     this.devices = [];
     this.headers = {
       'SoapAction':'http://schemas.cisco.com/ast/soap/action/#RisPort70#SelectCmDevice',
       'Authorization': 'Basic ' + new Buffer(authentication).toString('base64'),
       'Content-Type': 'text/xml; charset=utf-8'
     }
-    this.offSet = 0;
     this.stepSize = 1000; //for ucm prior to 9.0 the stepSize is 200
     this.options = {
       host: ucmHost,        // The IP Address of the Communications Manager Server
@@ -25,7 +22,7 @@ class RisPort {
       rejectUnauthorized: false   // required to accept self-signed certificate
     };
     this.options.agent = new https.Agent(this.options);
-  }
+  },
 
   getRisPortStatus(phonesList, options){
     return new Promise((resolve, reject) => {
@@ -61,7 +58,7 @@ class RisPort {
         reject(e);
       });
    });
-  }
+  },
 
 
   async getAllDevices(devices){
@@ -76,7 +73,7 @@ class RisPort {
         }
       };
       return this.devices;
-  }
+  },
 
   getPhones(devices){
     return new Promise((resolve, reject) => {

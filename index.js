@@ -15,10 +15,12 @@ var phonesWithSerial = [];
 
 async function getDeviceAndIp() {
   try{
-    const axl = new AXL(ucmVersion, ucmHost, authentication);
+    const axl = AXL;
+    axl.init(ucmVersion, ucmHost, authentication);
     console.log(new Date()+' Getting Phones from AXL');
     const devices = await axl.getPhones();
-    const risPort = new RisPort(ucmVersion, ucmHost, authentication);
+    const risPort = RisPort;
+    risPort.init(ucmVersion, ucmHost, authentication);
     console.log(new Date()+' Getting ip/registration from RisPort');
     const devicesWithStatus = await risPort.getPhones(devices);
     if(getPhoneSerials === 'true'){
