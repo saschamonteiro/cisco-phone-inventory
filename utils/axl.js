@@ -4,7 +4,7 @@ var https = require("https");
 var parseString = require('xml2js').parseString;
 var AxlHelper = require('./axlhelper');
 
-var cucm.AXL = {
+var AXL = {
   init(ucmVersion, ucmHost, authentication) {
     this.ucmVersion = ucmVersion;
     this.devices = [];
