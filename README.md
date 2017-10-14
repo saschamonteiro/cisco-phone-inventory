@@ -29,5 +29,9 @@ name,description,loginuser,dirNumber,status,ipaddress,serial,model
 this generates phones.csv  
 name,description,loginuser,dirNumber,status,ipaddress
 
+## To save a screenshot of the phones that are reachable
+Associate all devices to the UCM_USER and add GET_IMAGES=true to the command:
+`UCM_HOST=x.x.x.x UCM_USER=administrator UCM_PASS=password UCM_VERSION=11.5 GET_SERIALS=true GET_IMAGES=true node index.js`
+
 ## Note
 UCM_VERSION will need to represent a valid AXL Schema version (e.g. 10.0, 10.5, 11.0, 11.5)

@@ -3,6 +3,8 @@
 var http = require("http");
 http.globalAgent.maxSockets = 128;
 var parseString = require('xml2js').parseString;
+var fs = require('fs');
+var authentication = process.env.UCM_USER+':'+process.env.UCM_PASS;
 
 function getPhoneSerial(phone) {
   return new Promise((resolve, reject) => {
@@ -41,4 +43,26 @@ function getPhoneSerial(phone) {
   });
 }
 
-module.exports = getPhoneSerial;
+function getPhoneImage(phone){
+  var dir = './images';
+
+  if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir);
+  }
+  return new Promise((resolve, reject) => {
+    // console.log('getting phone image for ' + phone.ipAddress);
+    var file = fs.createWriteStream("./images/"+phone.name+".png");
+    http.get("http://"+ authentication +"@"+ phone.ipAddress +"/CGI/Screenshot", function(response) {
+      response.pipe(file);
+      // console.log(new Date()+' saved '+phone.name+'.png');
+      resolve();
+    }).on('error', function(err){
+      console.error(err);
+      resolve();
+    });
+  });
+}
+module.exports = {
+  getPhoneSerial,
+  getPhoneImage
+};
