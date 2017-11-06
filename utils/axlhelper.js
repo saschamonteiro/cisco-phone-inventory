@@ -7,7 +7,7 @@ module.exports = {
       <soapenv:Body>
       <axl:executeSQLQuery>
       <sql>
-      select SKIP ${skip} FIRST ${first} name from device where name like 'SEP%'
+      select SKIP ${skip} FIRST ${first} d.name from device d join typemodel tm on (tm.enum = d.tkmodel) where tm.tkclass = 1 and tm.tkrisclass = 1 and d.tkclass = 1
       </sql>
       </axl:executeSQLQuery>
       </soapenv:Body>

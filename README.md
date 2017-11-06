@@ -11,6 +11,7 @@ Utility to extract Cisco IPPhones with registration status and optional serial-n
   - Standard AXL API access
   - Standard CCM Admin Users
   - Standard SERVICEABILITY
+- UCM Application user associated with all ipphones if a screenshot image is required
 
 ## Install
 Clone/download this repo  
