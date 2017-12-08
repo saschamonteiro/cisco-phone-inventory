@@ -33,14 +33,15 @@ async function getDeviceAndIp() {
       phonesWithSerial.forEach(p => {
         fs.appendFile('phones.csv', p.name+','+p.description+','+p.loginUser+','+p.dirNumber+','+p.status+','+p.ipAddress+','+p.serial+','+p.model+'\r\n', function(err){});
       });
+      console.log(new Date()+' Finished writing csv for '+phonesWithSerial.length+' phones');
     }else{
       fs.unlink('phones.csv', function(e){});
       fs.appendFileSync('phones.csv', 'name,description,loginuser,dirNumber,status,ipaddress\r\n');
       devicesWithStatus.forEach(p => {
         fs.appendFile('phones.csv', p.name+','+p.description+','+p.loginUser+','+p.dirNumber+','+p.status+','+p.ipAddress+'\r\n', function(err){});
       });
+      console.log(new Date()+' Finished writing csv for '+devicesWithStatus.length+' phones');
     }
-    console.log(new Date()+' Finished writing csv for '+phonesWithSerial.length+' phones');
     if(getPhoneImages === 'true') {
       console.log(new Date()+' Getting phone images');
       await getAllPhonesImage(devicesWithStatus);

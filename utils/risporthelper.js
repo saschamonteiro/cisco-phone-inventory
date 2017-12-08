@@ -43,6 +43,7 @@ module.exports = {
           let items = cmDevice["ns1:item"];
           if(items !== undefined){
             items.forEach(item2 => {
+              // console.log('phone', JSON.stringify(item2));
               let phone = {
                 name: item2["ns1:Name"][0],
                 ipAddress: item2["ns1:IPAddress"][0]["ns1:item"][0]["ns1:IP"][0],
