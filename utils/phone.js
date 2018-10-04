@@ -24,8 +24,16 @@ function getPhoneSerial(phone) {
         parseString(xml, function (err, result) {
           var r = result["DeviceInformation"];
           // console.log(r);
-          phone.serial = r["serialNumber"][0];
-          phone.model = r["modelNumber"][0];
+         if (typeof r["serialNumber"] !== 'undefined'){
+                phone.serial = r["serialNumber"][0];
+          } else if (typeof r["SerialNumber"] !== 'undefined'){
+                phone.serial = r["SerialNumber"][0];
+          }
+          if (typeof r["modelNumber"] !== 'undefined'){
+                phone.model = r["modelNumber"][0];
+          } else if (typeof r["ModelNumber"] !== 'undefined'){
+                phone.model = r["ModelNumber"][0];
+          }
           resolve(phone);
         });
 
