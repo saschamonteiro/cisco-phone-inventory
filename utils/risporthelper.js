@@ -28,6 +28,33 @@ module.exports = {
       </soapenv:Envelope>`;
     return risRequest;
   },
+  getRisSoapContentHL() {
+    var risRequest = `<?xml version=\"1.0\" encoding=\"utf-8\"?>
+      <soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:soap=\"http://schemas.cisco.com/ast/soap\">
+        <soapenv:Header/>
+        <soapenv:Body>
+          <soap:selectCmDevice>
+            <soap:StateInfo></soap:StateInfo>
+            <soap:CmSelectionCriteria>
+            <soap:MaxReturnedDevices>100</soap:MaxReturnedDevices>
+            <soap:DeviceClass>HuntList</soap:DeviceClass>
+            <soap:Model>255</soap:Model>
+            <soap:Status>Any</soap:Status>
+            <soap:NodeName></soap:NodeName>
+            <soap:SelectBy>Name</soap:SelectBy>
+            <soap:SelectItems>
+              <soap:item>
+                  <soap:Item>*</soap:Item>
+              </soap:item>
+            </soap:SelectItems>
+            <soap:Protocol>Any</soap:Protocol>
+            <soap:DownloadStatus>Any</soap:DownloadStatus>
+            </soap:CmSelectionCriteria>
+          </soap:selectCmDevice>
+        </soapenv:Body>
+      </soapenv:Envelope>`;
+    return risRequest;
+  },
   getPhonesFromResponse(response, phonesList) {
     let devices = [];
     let a = response["soapenv:Envelope"]["soapenv:Body"][0];

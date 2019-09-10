@@ -23,9 +23,11 @@
     "node": ">=8.4.0"
   },
   "author": "Sascha Monteiro",
-  "contributors": [{
+  "contributors": [
+    {
       "name": "Sascha Monteiro"
-    }],
+    }
+  ],
   "license": "GPL-3.0",
   "repository": {
     "type": "git",

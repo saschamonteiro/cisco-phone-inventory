@@ -10,7 +10,7 @@ var ProgressBar = require('progress');
 
 var authentication = process.env.UCM_USER+':'+process.env.UCM_PASS;
 var ucmVersion = process.env.UCM_VERSION;
-var ucmHost = process.env.UCM_HOST
+var ucmHost = process.env.UCM_HOST;
 var getPhoneSerials = process.env.GET_SERIALS || 'false';
 var getPhoneImages = process.env.GET_IMAGES || 'false';
 var phonesWithSerial = [];

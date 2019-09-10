@@ -20,11 +20,16 @@ function getPhoneSerial(phone) {
         xml += d;
       });
       res.on('end', function(){
-        // console.log('phone details', xml);
+        console.log('phone details', xml);
         parseString(xml, function (err, result) {
           var r = result["DeviceInformation"];
           // console.log(r);
-          phone.serial = r["serialNumber"][0];
+          if(r["serialNumber"] === undefined){
+            phone.serial = r["MACAddress"][0];
+          }else{
+            phone.serial = r["serialNumber"][0];
+          }
+
           phone.model = r["modelNumber"][0];
           resolve(phone);
         });

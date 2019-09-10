@@ -3,10 +3,10 @@
 var https = require("https");
 var parseString = require('xml2js').parseString;
 var RisPortHelper = require('./risporthelper');
-var ucm = {};
-ucm.inventory = {};
-ucm.inventory.cisco = {};
-ucm.inventory.cisco.ucm = {};
+var ucm = ucm || {};
+ucm.inventory = ucm.inventory || {};
+ucm.inventory.cisco = ucm.inventory.cisco || {};
+ucm.inventory.cisco.ucm = ucm.inventory.cisco.ucm || {};
 ucm.inventory.cisco.ucm.RisPort = {
   devices: [],
   settings: {
@@ -65,7 +65,42 @@ ucm.inventory.cisco.ucm.RisPort = {
       });
    });
   },
+  getRisPortStatusHL(options){
+    return new Promise((resolve, reject) => {
+      var sAXLRequest = RisPortHelper.getRisSoapContentHL();
+      let xml = '';
+      console.log('options', options);
+      var req = https.request(options, function(res) {
+        res.setEncoding('utf8');
+        res.on('data', function(d) {
+          xml += d;
+        });
+        res.on('end', function(){
+          parseString(xml, function (err, result) {
+            if(err){
+              reject('Error '+ err);
+            } else {
+              // let devices = RisPortHelper.getPhonesFromResponse(result, phonesList);
+              resolve(result);
+            }
+          });
+        });
+      });
+      req.write(sAXLRequest);
+      req.end();
+      req.on('socket', function (socket) {
+        socket.setTimeout(5000);
+        socket.on('timeout', function() {
+          reject('timeout connecting to ucm risport')
+        });
+      });
 
+      req.on('error', function(e) {
+        console.error(e);
+        reject(e);
+      });
+   });
+  },
 
   async getAllDevices(devices){
       var arrays = [], size = this.settings.stepSize;
