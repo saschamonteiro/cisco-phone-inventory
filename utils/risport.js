@@ -1,5 +1,5 @@
 'use strict'
-
+// changed to SelectCmDeviceExt to prevent duplicates
 var https = require("https");
 var parseString = require('xml2js').parseString;
 var RisPortHelper = require('./risporthelper');
