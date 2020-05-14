@@ -23,7 +23,7 @@ ucm.inventory.cisco.ucm.RisPort = {
     this.ucmVersion = ucmVersion;
     this.settings.options.host = ucmHost;
     this.settings.options.headers = {
-      'SoapAction':'http://schemas.cisco.com/ast/soap/action/#RisPort70#SelectCmDevice',
+      'SoapAction':'http://schemas.cisco.com/ast/soap/action/#RisPort70#SelectCmDeviceExt',
       'Authorization': 'Basic ' + new Buffer(authentication).toString('base64'),
       'Content-Type': 'text/xml; charset=utf-8'
     }
@@ -32,6 +32,7 @@ ucm.inventory.cisco.ucm.RisPort = {
 
   getRisPortStatus(phonesList, options){
     return new Promise((resolve, reject) => {
+      // console.dir(phonesList)
       var sAXLRequest = RisPortHelper.getRisSoapContent(phonesList);
       let xml = '';
       var req = https.request(options, function(res) {
@@ -107,12 +108,17 @@ ucm.inventory.cisco.ucm.RisPort = {
       while (devices.length > 0){
         arrays.push(devices.splice(0, size));
       }
+      console.log(new Date() + ' getAllDevices blocks:'+arrays.length)
+      process.stdout.clearLine();
       for(let v of arrays) {
+        process.stdout.write('.');
         let d = await this.getRisPortStatus(v, this.settings.options);
         if(d !== undefined){
           this.devices = this.devices.concat(d);
         }
       };
+      process.stdout.clearLine();
+      process.stdout.cursorTo(0);
       return this.devices;
   },
 

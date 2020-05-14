@@ -21,25 +21,31 @@ async function getDeviceAndIp() {
     axl.init(ucmVersion, ucmHost, authentication);
     console.log(new Date()+' Getting Phones from AXL');
     const devices = await axl.getPhones();
+    console.log(new Date()+' Found ['+devices.length+'] Phones from AXL');
     const risPort = RisPort;
     risPort.init(ucmVersion, ucmHost, authentication);
     console.log(new Date()+' Getting ip/registration from RisPort');
     const devicesWithStatus = await risPort.getPhones(devices);
+    console.log(new Date()+' Received ['+devicesWithStatus.length+'] devices with ip/registration from RisPort');
     if(getPhoneSerials === 'true'){
       console.log(new Date()+' Getting phone serial numbers');
       await getAllPhonesSerial(devicesWithStatus);
       fs.unlink('phones.csv', function(e){});
-      fs.appendFileSync('phones.csv', 'name,description,loginuser,dirNumber,status,ipaddress,serial,model\r\n');
+      var out = fs.createWriteStream('phones.csv', { flags : 'a' });
+      out.write('name,description,loginuser,dirNumber,status,ipaddress,nodename,serial,model\r\n', 'utf-8');
       phonesWithSerial.forEach(p => {
-        fs.appendFile('phones.csv', p.name+','+p.description+','+p.loginUser+','+p.dirNumber+','+p.status+','+p.ipAddress+','+p.serial+','+p.model+'\r\n', function(err){});
+        out.write(p.name+','+p.description+','+p.loginUser+','+p.dirNumber+','+p.status+','+p.ipAddress+','+p.nodeName+','+p.serial+','+p.model+'\r\n', 'utf-8');
       });
+      out.end();
       console.log(new Date()+' Finished writing csv for '+phonesWithSerial.length+' phones');
     }else{
       fs.unlink('phones.csv', function(e){});
-      fs.appendFileSync('phones.csv', 'name,description,loginuser,dirNumber,status,ipaddress\r\n');
+      var out = fs.createWriteStream('phones.csv', { flags : 'a' });
+      out.write('name,description,loginuser,dirNumber,status,ipaddress,nodename\r\n', 'utf-8');
       devicesWithStatus.forEach(p => {
-        fs.appendFile('phones.csv', p.name+','+p.description+','+p.loginUser+','+p.dirNumber+','+p.status+','+p.ipAddress+'\r\n', function(err){});
+        out.write(p.name+','+p.description+','+p.loginUser+','+p.dirNumber+','+p.status+','+p.ipAddress+','+p.nodeName+'\r\n', 'utf-8')
       });
+      out.end();
       console.log(new Date()+' Finished writing csv for '+devicesWithStatus.length+' phones');
     }
     if(getPhoneImages === 'true') {
