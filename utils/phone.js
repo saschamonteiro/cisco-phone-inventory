@@ -20,7 +20,7 @@ function getPhoneSerial(phone) {
         xml += d;
       });
       res.on('end', function(){
-        console.log('phone details', xml);
+        // console.log('phone details', xml);
         parseString(xml, function (err, result) {
           var r = result["DeviceInformation"];
           // console.log(r);
